@@ -7,7 +7,7 @@ class Candidate:
         self.count = 0
 
     def is_elim(self):
-        return (self.candi_name in list_of_elim_candis)
+        return (self.name in list_of_elim_candis)
         
 
 class Ballot():
@@ -29,53 +29,62 @@ def voting_solve (r, w) :
     list_of_current_candis = []
     list_of_elim_candis = []
     # number of cases following
-    cases = r.readline()   
-    blank = r.readline()
+    cases = r.readline()  
+    for i in range(cases):
 
-    l = r.readline()
-    print(l)
-    num_candis = int(l)
+        blank = r.readline()
 
-    dic_name_to_object = {}
-    for i in range(num_candis):
-        name = r.readlines()
-        candi = Candidate(name)
-        dic_name_to_object[name] = candi
-        list_of_current_candis.append(candi)
-        #print(candi)
-    list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
-    dic_ballot_to_candi = {k : v for k, v in list_of_items}
+        l = r.readline()
+        num_candis = int(l)
 
-    # the remaining 
-    list_of_ballots = r.readlines()
+        # dic_name_to_object {candidate:object}
+        # dic_ballot_candi {#:candidate}
+        dic_name_to_object = {}
+        for i in range(num_candis):
+            name = r.readlines()
+            candi = Candidate(name)
+            dic_name_to_object[name] = candi
+            list_of_current_candis.append(candi)
+            #print(candi)
+        list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
+        dic_ballot_to_candi = {k : v for k, v in list_of_items}
+       
+        list_of_ballots = []    
+        while (r.readline() != ""):
+            list_of_ballots.append(r.readline())
 
-    for line in list_of_ballots:
-        ballot = Ballot(line)
-        ballot_iter = next_choice(ballot)
-        first_choice = next(ballot_iter)
-        candi_name = dic_ballot_to_candi[first_choice]
-        candi_object = dic_name_to_object[candi_name]
-        candi_object.ballot_list.append(ballot.ballot_list)
-        candi_object.count += 1
-        num_ballots += 1
+        for line in list_of_ballots:
+            ballot = Ballot(line)
+            ballot_iter = next_choice(ballot)
+            first_choice = next(ballot_iter)
+            candi_name = dic_ballot_to_candi[first_choice]
+            candi_object = dic_name_to_object[candi_name]
+            candi_object.ballot_list.append(ballot.ballot_list)
+            candi_object.count += 1
+            num_ballots += 1
 
 
-    # first 2 terminating conditions
-    cutoff = num_ballots // 2 + 1
-    cutoff_tie = num_ballots / num_candis
-    if type(cutoff_tie) is int:
-        all_tied = True
+        # first 2 terminating conditions
+        cutoff = num_ballots // 2 + 1
+        cutoff_tie = num_ballots / num_candis
+        if type(cutoff_tie) is int:
+            all_tied = True
+            for candi in list_of_current_candis:
+                if (candi.count != cutoff_tie):
+                    all_tied = False
+
+        if (all_tied == True):
+            print list_of_current_candis
+            return
+
+
         for candi in list_of_current_candis:
-            if (candi.count != cutoff_tie):
-                all_tied = False
+            if (candi.count >= cutoff):
+                return candi.name
 
-    if (all_tied == True):
-        print list_of_current_candis
+        # last terminating condition
 
-    for candi in list_of_current_candis:
-        if (candi.count >= cutoff):
-            return candi.name
 
-    # now go to cool part!
-    
+        if candi_object.count == least_count:
+
 
