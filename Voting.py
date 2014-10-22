@@ -101,18 +101,17 @@ def voting_solve (r, w) :
             for candi in current_candi_copy:
                 if (candi.count < least_ballot):
                     least_ballot = candi.count
-            print ("*********************")
+            print ("**********1***********")
 
             print (len(current_candi_copy),"length of current_candi_copy") 
         
-            for candi in current_candi_copy:
+            for candi in list_of_current_candis:
 
-                print(least_ballot)
+                print(candi, least_ballot)
                 # not going to the orange one   BUG!!!!!!!!!!!!!!!!
                 if (candi.count == least_ballot):
                     list_of_elim_candis.append(candi)
-                    index = current_candi_copy.index(candi)
-                    current_candi_copy.pop(index)
+                    list_of_current_candis.remove(candi)
                     print("deleted", candi, candi.count)
                     print("least_ballot", least_ballot)
 
@@ -121,7 +120,7 @@ def voting_solve (r, w) :
                 print (candi,"list_of_current_candis")
 
 
-            print ("*********************")
+            print ("***********2**********")
             num_candis = len(list_of_current_candis)
 
             #revote
@@ -144,7 +143,6 @@ def voting_solve (r, w) :
                         except StopIteration:
                             break
 
-            current_candi_copy = list_of_current_candis
         if (all_tied == True):
             print (list_of_current_candis)
         else:
