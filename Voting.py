@@ -20,18 +20,17 @@ class Ballot:
             yield ballot_list[i]
             i += 1 
 
-def has_winner(cutoff,cutoff_tie):
+def has_winner(cutoff,cutoff_tie, list_of_current_candis):
     if type(cutoff_tie) is int:
-            all_tied = True
-            for candi in list_of_current_candis:
-                if (candi.count != cutoff_tie):
-                    all_tied = False
+        all_tied = True
+        for candi in list_of_current_candis:
+            if (candi.count != cutoff_tie):
+                all_tied = False
 
-    if (all_tied == True):
-        return True
+        if (all_tied == True):
+            return True
 
     else:
-
         for candi in list_of_current_candis:
             if (candi.count >= cutoff):
                 return True
@@ -48,7 +47,7 @@ def voting_solve (r, w) :
     list_of_elim_candis = []
     # number of cases following
     cases = r.readline()  
-    for i in range(cases):
+    for i in range(int(cases)):
 
         blank = r.readline()
 
@@ -61,7 +60,7 @@ def voting_solve (r, w) :
         for i in range(num_candis):
             name = r.readlines()
             candi = Candidate(name)
-            dic_name_to_object[name] = candi
+            dic_name_to_object[str(name)] = candi
             list_of_current_candis.append(candi)
             #print(candi)
         list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
@@ -81,10 +80,10 @@ def voting_solve (r, w) :
             candi_object.count += 1
             num_ballots += 1
 
-        all_tied == True
+        all_tied = True
         # first 2 terminating conditions
         cutoff = num_ballots // 2 + 1
-        while(has_winner(cutoff,num_ballots / num_candis) == False):
+        while(has_winner(cutoff, (num_ballots / num_candis), list_of_current_candis) == False):
         # do the following    
 
             # last terminating condition
@@ -114,9 +113,9 @@ def voting_solve (r, w) :
                             break
 
         if (all_tied == True):
-            print list_of_current_candis
+            print (list_of_current_candis)
         else:
-            print list_of_current_candis[0]
+            print (list_of_current_candis[0])
 
 
 
