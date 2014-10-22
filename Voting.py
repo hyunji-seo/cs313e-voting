@@ -14,11 +14,6 @@ class Ballot:
     def __init__(self,ballot_list):
         self.ballot_list = ballot_list
 
-    def next_choice(self):
-        i = 0
-        while True:
-            yield ballot_list[i]
-            i += 1 
 
 def has_winner(cutoff, cutoff_tie, list_of_current_candis):
     if type(cutoff_tie) is int:
@@ -56,18 +51,25 @@ def voting_solve (r, w) :
         # dic_ballot_candi {#:candidate}
         dic_name_to_object = {}
         for i in range(num_candis):
-            name = r.readlines()
+            name = r.readline()
             candi = Candidate(name)
             dic_name_to_object[str(name)] = candi
             list_of_current_candis.append(candi)
             #print(candi)
         list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
         dic_ballot_to_candi = {k : v for k, v in list_of_items}
-        list_of_ballots = []    
-        while (r.readline() != ""):
-            line_list = r.readline().split()
-            print (line_list)
-            list_of_ballots.append(line_list)
+        list_of_ballots = [] 
+        end = False   
+        while (not end):
+            line = r.readline()
+            if (line != ""):
+                line_list = line.split()
+                print (line_list)
+                print(r.readline)
+                list_of_ballots.append(line_list)
+            else:
+                end = True
+                
         print ("list of Ballot")
         print (list_of_ballots)
         for line in list_of_ballots:
