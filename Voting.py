@@ -8,14 +8,16 @@ class Candidate:
 
     def is_elim(self):
         return (self.name in list_of_elim_candis)
+
+    def __str__(self):
+        return self.name
         
 
 class Ballot:
     def __init__(self,ballot_list):
         self.ballot_list = ballot_list
 
-
-def has_winner(cutoff, cutoff_tie, list_of_current_candis):
+def has_winner(cutoff, cutoff_tie, list_of_current_candis,all_tied):
     if type(cutoff_tie) is int:
         all_tied = True
         for candi in list_of_current_candis:
@@ -36,91 +38,121 @@ def has_winner(cutoff, cutoff_tie, list_of_current_candis):
 
 
 def voting_solve (r, w) :
-    num_ballots = 0
-    list_of_current_candis = []
-    list_of_elim_candis = []
-    # number of cases following
-    cases = r.readline()  
-    for i in range(int(cases)):
 
-        blank = r.readline()
+    # number of cases following
+    cases = r.readline() 
+    blank = r.readline()
+
+    for i in range(int(cases)):
+        num_ballots = 0
+        list_of_current_candis = []
+        list_of_elim_candis = []
         l = r.readline()
         num_candis = int(l)
-
         # dic_name_to_object {candidate:object}
-        # dic_ballot_candi {#:candidate}
+        # dic_ballot_to_candi {#:object}
         dic_name_to_object = {}
         for i in range(num_candis):
-            name = r.readline()
+            name = r.readline().rstrip()
             candi = Candidate(name)
             dic_name_to_object[str(name)] = candi
             list_of_current_candis.append(candi)
-            #print(candi)
+               
+        # so far so good 
         list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
         dic_ballot_to_candi = {k : v for k, v in list_of_items}
         list_of_ballots = [] 
         end = False   
         while (not end):
-            line = r.readline()
+            line = r.readline().rstrip()
             if (line != ""):
                 line_list = line.split()
-                print (line_list)
-                print(r.readline)
                 list_of_ballots.append(line_list)
             else:
                 end = True
-                
-        print ("list of Ballot")
-        print (list_of_ballots)
+        # so far so good 
+        # first round voting 
         for line in list_of_ballots:
-            ballot_list = line.split()
-            ballot = Ballot(ballot_list)
-            first_choice = ballot_list[0]
-            candi_name = dic_ballot_to_candi[first_choice]
-            print ("*************************")
-            print(str(candi_name) + "___________")
-            candi_object = dic_name_to_object[candi_name]
+            ballot = Ballot(line)
+
+            first_choice = line[0]
+            candi_object = dic_ballot_to_candi[int(first_choice)]
             candi_object.ballot_list.append(ballot.ballot_list)
             candi_object.count += 1
             num_ballots += 1
+
+        
+
+        # so far so good 
         # first 2 terminating conditions
-        cutoff = num_ballots // 2 + 1
-        while (has_winner(cutoff, (num_ballots / num_candis), list_of_current_candis) == False):
+        if (num_ballots % 2 == 0):
+            cutoff = num_ballots / 2 
+        else:
+            cutoff = num_ballots //2 + 1
+
+        all_tied = False
+        current_candi_copy = list_of_current_candis
+        while (has_winner(cutoff, (num_ballots / num_candis),current_candi_copy,all_tied) == False):
         # do the following    
 
             # last terminating condition
             # first find the least num of ballots and see if there is a tie
-#            print(list_of_current_candis[0])
-            least_ballot = list_of_current_candis[0].count
-#            print (str(least_ballot) + "++++++++++")
-#            print (list_of_current_candis)
-            for candi in list_of_current_candis:
-                if candi.count < least_ballot:
+            least_ballot = current_candi_copy[0].count
+            for candi in current_candi_copy:
+                if (candi.count < least_ballot):
                     least_ballot = candi.count
-                elif (candi.count == least_ballot):
+            print ("*********************")
+
+            print (len(current_candi_copy),"length of current_candi_copy") 
+        
+            for candi in current_candi_copy:
+
+                print(least_ballot)
+                # not going to the orange one   BUG!!!!!!!!!!!!!!!!
+                if (candi.count == least_ballot):
                     list_of_elim_candis.append(candi)
-                    list_of_current_candis.remove(candi)
-#            print(num_candis)
+                    index = current_candi_copy.index(candi)
+                    current_candi_copy.pop(index)
+                    print("deleted", candi, candi.count)
+                    print("least_ballot", least_ballot)
+
+
+            for candi in list_of_current_candis:
+                print (candi,"list_of_current_candis")
+
+
+            print ("*********************")
             num_candis = len(list_of_current_candis)
 
+            #revote
             for candi in list_of_elim_candis:
+
                 ballot_list = candi.ballot_list
                 # go through each ballot in that 2d list(ballot_list)
                 for ballot in ballot_list:
                     ballot_iter = iter(ballot)
                     first_choice = next(ballot_iter)
                     while True:
-                        if (dic_ballot_to_candi[next(ballot_iter)] not in list_of_elim_candis):
-                            candi_name = dic_ballot_to_candi[next(ballot_iter)]
-                            candi = dic_name_to_object[candi_name]
-                            candi.count += 1
-                            candi.ballot_list.append(ballot)
+                        try:
+                            candi_revote = dic_ballot_to_candi[int(next(ballot_iter))]
+
+                            if (candi_revote not in list_of_elim_candis):
+                                candi = candi_revote
+                                candi.count += 1
+                                candi.ballot_list.append(ballot)
+                                break
+                        except StopIteration:
                             break
 
+            current_candi_copy = list_of_current_candis
         if (all_tied == True):
             print (list_of_current_candis)
         else:
-            print (list_of_current_candis[0])
+            print ("+++++++++++++")
+            for candi in list_of_current_candis:
+                if (candi.count >= cutoff):
+                    print (candi)
+
 
 
 
