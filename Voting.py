@@ -82,7 +82,10 @@ def voting_solve (r, w) :
         
 
         # first 2 terminating conditions
-        if (num_ballots % 2 == 0):
+        if (num_ballots == 1):
+            cutoff = 1
+
+        elif (num_ballots % 2 == 0):
             cutoff = num_ballots / 2 
         else:
             cutoff = num_ballots //2 + 1
@@ -105,8 +108,6 @@ def voting_solve (r, w) :
                     list_of_current_candis.remove(candi)
 
 
-            num_candis = len(list_of_current_candis)
-
             #revote
             for candi in list_of_elim_candis:
                 ballot_list = candi.ballot_list
@@ -125,12 +126,26 @@ def voting_solve (r, w) :
                                 break
                         except StopIteration:
                             break
+            #print (list_of_current_candis,"Here")
+            least_ballot = list_of_current_candis[0].count
+            for candi in list_of_current_candis:
+                if (candi.count < least_ballot):
+                    least_ballot = candi.count
+
+            current_candi_copy = list(list_of_current_candis)        
+            for candi in current_candi_copy:
+                if (candi.count == least_ballot):
+                    list_of_elim_candis.append(candi)
+                    list_of_current_candis.remove(candi)
+
+            num_candis = len(list_of_current_candis)
 
         if (all_tied == True):
             print (list_of_current_candis)
         else:
+            print (cutoff, num_ballots)
             for candi in list_of_current_candis:
-                print(candi,candi.count)
+                #print(candi,candi.count)
                 if (candi.count > cutoff):
                     print (candi)
         if (case_index != int(cases) - 1):
