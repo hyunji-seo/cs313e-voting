@@ -19,11 +19,7 @@ class TestVoting(TestCase):
     def test_has_winner_4(self):
     	a = has_winner(5, 2, ["1", "2", "3"])
     	self.assertEqual(a, False)
-<<<<<<< HEAD
-    # below are test cases for voting solve
-#    def test_voting_solve1(self):
-=======
->>>>>>> 86cd4717fe9e0838b45dd93064c33f7bb2633d88
+
 
 
     def test_Candidate_class1(self):
@@ -124,9 +120,5 @@ class TestVoting(TestCase):
 
 
 
+main()
 
-<<<<<<< HEAD
-main()
-=======
-main()
->>>>>>> 86cd4717fe9e0838b45dd93064c33f7bb2633d88
