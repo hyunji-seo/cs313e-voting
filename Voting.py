@@ -120,8 +120,7 @@ def voting_solve (r, w) :
         while (has_winner(cutoff, (num_ballots / num_candis),list_of_current_candis) == False):
             list_of_elim_candis = []
             current_candi_copy = list(list_of_current_candis)
-            # last terminating condition
-            # first find the least num of ballots and see if there is a tie
+            # first find the least num of ballots
             for candi in list_of_current_candis:
                 if (candi.count == 0):
                     least_ballot = 0
@@ -140,13 +139,14 @@ def voting_solve (r, w) :
             # bucket resorting cycle
             for candi in list_of_elim_candis:
                 ballot_list = candi.ballot_list
-                # go through each ballot in that 2d list(ballot_list)
+                # go through each ballot in ballot_list (2D list)
                 for ballot in ballot_list:
                     ballot.revote(list_of_current_candis,list_of_elim_candis,ballot,dic_ballot_to_candi)
                    
             num_candis = len(list_of_current_candis)
             assert num_candis >= 0
         
+        # after a winner is found...
 
         all_tied = True
         for candi in list_of_current_candis:
