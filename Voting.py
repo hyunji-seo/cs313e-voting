@@ -139,30 +139,35 @@ def voting_solve (r, w) :
                     list_of_elim_candis.append(candi)
                     list_of_current_candis.remove(candi)
             
+            # bucket resorting cycle
             for candi in list_of_elim_candis:
                 ballot_list = candi.ballot_list
                 # go through each ballot in that 2d list(ballot_list)
                 for ballot in ballot_list:
                     ballot.revote(list_of_current_candis,list_of_elim_candis,ballot,dic_ballot_to_candi)
-                    #ballot_genertor = ballot.get_next(0)
-                    
+                   
             num_candis = len(list_of_current_candis)
             assert num_candis >= 0
         
-            
+
         all_tied = True
         for candi in list_of_current_candis:
             if (candi.count != num_ballots / num_candis):
                 all_tied = False
                 break
 
+        # if tied winners
         if (all_tied == True):
             for candi in list_of_current_candis:
                 print (candi)
+
+        # if majority winner
         else:
             for candi in list_of_current_candis:
                 if (candi.count >= cutoff):
                     print (candi)
+
+        # bug: no blank line for last output line
         if (case_index != int(cases) - 1):
             print()
 
