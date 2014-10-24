@@ -12,7 +12,7 @@ class Candidate:
 class Ballot:
     def __init__(self,ballot_list):
         self.ballot_list = ballot_list
-        self.index = 1=
+        self.index = 1
     
     def get_next(self,i):
         j = i
@@ -36,6 +36,7 @@ class Ballot:
 def has_winner(cutoff, cutoff_tie, list_of_current_candis):
     assert type(list_of_current_candis) is list
     assert cutoff >= 0
+
     all_tied = True
     max_v = 0
     min_v = 2 * cutoff
@@ -61,7 +62,6 @@ def has_winner(cutoff, cutoff_tie, list_of_current_candis):
 # ================================================================
 
 def voting_solve (r, w) :
-    # number of cases following
     cases = r.readline() 
     blank = r.readline()
 
@@ -107,7 +107,7 @@ def voting_solve (r, w) :
             candi_object.count += 1
             num_ballots += 1
 
-        # first 2 terminating conditions
+        # calculating majority cutoff
         if (num_ballots == 1):
             cutoff = 1
         elif (num_ballots % 2 == 0):
@@ -116,8 +116,8 @@ def voting_solve (r, w) :
             cutoff = num_ballots //2 + 1
         assert cutoff >= 0
 
+        # cycles until winner is found
         while (has_winner(cutoff, (num_ballots / num_candis),list_of_current_candis) == False):
-            # do the following
             list_of_elim_candis = []
             current_candi_copy = list(list_of_current_candis)
             # last terminating condition
