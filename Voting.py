@@ -1,4 +1,4 @@
-## ========== CLASSES =============
+## ============================= CLASSES ====================================
 
 class Candidate:
     def __init__(self,candi_name):
@@ -9,12 +9,10 @@ class Candidate:
     def __str__(self):
         return self.name
 
-
-
 class Ballot:
     def __init__(self,ballot_list):
         self.ballot_list = ballot_list
-        self.index = 1
+        self.index = 1=
     
     def get_next(self,i):
         j = i
@@ -58,9 +56,9 @@ def has_winner(cutoff, cutoff_tie, list_of_current_candis):
     return False
 
 
-
-# ==================== CODE =========================
-
+# =======================================================================
+# ================================= CODE ==================================
+# ================================================================
 
 def voting_solve (r, w) :
     # number of cases following
