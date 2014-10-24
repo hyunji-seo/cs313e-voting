@@ -3,13 +3,7 @@ from unittest import main,TestCase
 from Voting import voting_solve,has_winner,Candidate,Ballot
 
 class TestVoting(TestCase):
-<<<<<<< HEAD
-#    def test_Candidate_class1(self):
-#        p = Candidate("a")
-#        self.assertEqual(p.name, "a")
-    # below are test for ballot class
-#    def test_Ballot_class1(self):
-    # below are tests for has_winner
+
     def test_has_winner_1(self):
     	candi = Candidate("candi")
     	candi_2 = Candidate("candi_2")
@@ -27,7 +21,7 @@ class TestVoting(TestCase):
     	self.assertEqual(a, False)
     # below are test cases for voting solve
 #    def test_voting_solve1(self):
-=======
+
 
     def test_Candidate_class1(self):
         p = Candidate("a")
@@ -128,5 +122,4 @@ class TestVoting(TestCase):
 
 
 
->>>>>>> e668664a28035bd9700e8651452fb918025bd29f
 main()
