@@ -70,11 +70,14 @@ def voting_solve (r, w) :
     for i in range(int(cases)):
         case_index = i
         num_ballots = 0
-        list_of_current_candis = []
-        list_of_elim_candis = []
+
         l = r.readline()
         num_candis = int(l)
         assert num_candis >= 0
+
+        list_of_current_candis = []
+        list_of_elim_candis = []
+
         # dic_name_to_object {candidate_name:object}
         # dic_ballot_to_candi {#:object}
         dic_name_to_object = {}
@@ -84,9 +87,9 @@ def voting_solve (r, w) :
             dic_name_to_object[str(name)] = candi
             list_of_current_candis.append(candi)
                
-        # so far so good 
         list_of_items = zip(range(1,num_candis + 1),list_of_current_candis)
         dic_ballot_to_candi = {k : v for k, v in list_of_items}
+
         list_of_ballots = [] 
         end = False   
         while (not end):
@@ -96,10 +99,10 @@ def voting_solve (r, w) :
                 list_of_ballots.append(line_list)
             else:
                 end = True
+
         # first round voting 
         for line in list_of_ballots:
             ballot = Ballot(line)
-
             first_choice = line[0]
             candi_object = dic_ballot_to_candi[int(first_choice)]
             candi_object.ballot_list.append(ballot)
@@ -109,16 +112,14 @@ def voting_solve (r, w) :
         # first 2 terminating conditions
         if (num_ballots == 1):
             cutoff = 1
-
         elif (num_ballots % 2 == 0):
             cutoff = num_ballots / 2 + 1 
         else:
             cutoff = num_ballots //2 + 1
-
         assert cutoff >= 0
 
         while (has_winner(cutoff, (num_ballots / num_candis),list_of_current_candis) == False):
-        # do the following
+            # do the following
             list_of_elim_candis = []
             current_candi_copy = list(list_of_current_candis)
             # last terminating condition
@@ -132,18 +133,15 @@ def voting_solve (r, w) :
                         if (candi.count < least_ballot):
                             least_ballot = candi.count
 
-        
+            # for candidates with lowest number of votes
             for candi in current_candi_copy:
                 if (candi.count == least_ballot):
                     list_of_elim_candis.append(candi)
                     list_of_current_candis.remove(candi)
-
-            # list_of_elim_candis is right
             
             for candi in list_of_elim_candis:
                 ballot_list = candi.ballot_list
                 # go through each ballot in that 2d list(ballot_list)
-
                 for ballot in ballot_list:
                     ballot.revote(list_of_current_candis,list_of_elim_candis,ballot,dic_ballot_to_candi)
                     #ballot_genertor = ballot.get_next(0)
