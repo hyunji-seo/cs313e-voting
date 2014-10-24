@@ -1,4 +1,4 @@
-## ========== classes =============
+## ========== CLASSES =============
 
 class Candidate:
     def __init__(self,candi_name):
@@ -6,11 +6,10 @@ class Candidate:
         self.ballot_list = []
         self.count = 0
 
-
     def __str__(self):
         return self.name
 
-        
+
 
 class Ballot:
     def __init__(self,ballot_list):
@@ -36,9 +35,6 @@ class Ballot:
             except StopIteration:
                 break
     
-
-
-
 def has_winner(cutoff, cutoff_tie, list_of_current_candis):
     assert type(list_of_current_candis) is list
     assert cutoff >= 0
@@ -53,10 +49,7 @@ def has_winner(cutoff, cutoff_tie, list_of_current_candis):
 
     assert max_v >= 0
     assert min_v >= 0
-    # if (all_tied == True):
-    #     return True
-    # else:
-    #     return False
+ 
     if(max_v >= cutoff):
         return True
     elif(max_v == min_v):
@@ -70,7 +63,6 @@ def has_winner(cutoff, cutoff_tie, list_of_current_candis):
 
 
 def voting_solve (r, w) :
-
     # number of cases following
     cases = r.readline() 
     blank = r.readline()
